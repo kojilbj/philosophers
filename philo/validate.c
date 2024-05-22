@@ -6,7 +6,7 @@
 /*   By: kojwatan <kojwatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:03:54 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/22 13:11:57 by kojwatan         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:26:52 by kojwatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	validate(char *args[])
 	else if (check_invalid_char(args[3]) == -1)
 		printf("time_to_sleep is invalid.\n");
 	else if (args[4] != NULL && check_invalid_char(args[4]) == -1)
+		printf("number_of_times_each_philosopher_must_eat is invalid.\n");
+	else if (args[4] != NULL && ft_atoi(args[4]) == 0)
 		printf("number_of_times_each_philosopher_must_eat is invalid.\n");
 	else
 		return (1);
