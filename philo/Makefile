@@ -2,9 +2,9 @@ CC=cc
 FLAGS=-Werror -Wall -Wextra
 #FLAGS+=-g -fsanitize=thread
 NAME=philo
-SRC=main.c constraints.c seating_philos.c \
+SRC=main.c rules_init.c seating_philos.c \
 	philo_action.c write.c validate.c get_time.c \
-	threads.c check.c
+	threads.c check.c sleep.c
 OBJS=$(SRC:.c=.o)
 
 all:$(NAME)

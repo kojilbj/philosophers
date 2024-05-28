@@ -6,7 +6,7 @@
 /*   By: kojwatan <kojwatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:03:31 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/22 13:09:32 by kojwatan         ###   ########.fr       */
+/*   Updated: 2024/05/24 10:41:57 by kojwatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	philo_sleep(t_philo *philo, int time_sleep)
 {
 	put_log(philo, "sleeping");
 	if (is_dead(philo) == FALSE)
-		usleep(time_sleep * 1000);
+			philo_usleep(time_sleep);
 	return (0);
 }
 
@@ -51,7 +51,7 @@ int	philo_eat(t_philo *philo, int time_eat)
 	pthread_mutex_unlock(&philo->time_last_eat_lock);
 	put_log(philo, "eating");
 	if (is_dead(philo) == FALSE)
-		usleep(time_eat * 1000);
+		philo_usleep(time_eat);
 	philo_put_down_forks(philo);
 	plus_eat_count(philo);
 	return (0);
@@ -60,5 +60,6 @@ int	philo_eat(t_philo *philo, int time_eat)
 int	philo_think(t_philo *philo)
 {
 	put_log(philo, "thinking");
+	//usleep(100);
 	return (0);
 }

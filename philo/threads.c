@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kojwatan <kojwatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: watanabekoji <watanabekoji@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:03:46 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/22 13:05:48 by kojwatan         ###   ########.fr       */
+/*   Updated: 2024/05/28 09:43:11 by watanabekoj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ void	*observer(void *data)
 			count++;
 		else
 			count = 0;
-		if (count == philo->constraints.number_of_philos
+		if (count == philo->rules.number_of_philos
 			|| check_dead(philo) == TRUE)
 		{
-			if (count != philo->constraints.number_of_philos)
+			if (count != philo->rules.number_of_philos)
 				put_dead_log(philo);
 			switch_dead_fg(philo);
 			break ;
@@ -57,8 +57,8 @@ void	*philo_life_circle(void *data)
 	philo = (t_philo *)data;
 	while (is_dead(philo) == FALSE)
 	{
-		philo_eat(philo, philo->constraints.time_to_eat);
-		philo_sleep(philo, philo->constraints.time_to_sleep);
+		philo_eat(philo, philo->rules.time_to_eat);
+		philo_sleep(philo, philo->rules.time_to_sleep);
 		philo_think(philo);
 	}
 	return (NULL);
@@ -70,12 +70,13 @@ int	philos_create(t_philo *philos)
 	int	ret;
 
 	i = 0;
-	while (i < philos->constraints.number_of_philos)
+	while (i < philos->rules.number_of_philos)
 	{
 		ret = pthread_create(&(philos->thread_id),
 				NULL, philo_life_circle, (void *)philos);
 		philos = philos->next;
 		i++;
+		usleep(10);
 	}
 	return (ret);
 }

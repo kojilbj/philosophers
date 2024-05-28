@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_time.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kojwatan <kojwatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: watanabekoji <watanabekoji@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:03:16 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/22 13:08:31 by kojwatan         ###   ########.fr       */
+/*   Updated: 2024/05/28 09:40:47 by watanabekoj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ size_t	check_dead(t_philo *philo)
 	int	ret;
 
 	pthread_mutex_lock(&philo->time_last_eat_lock);
-	if (get_passed_time(philo->time_last_eat) > philo->constraints.time_to_die)
+	if (get_passed_time(philo->time_last_eat) > philo->rules.time_to_die)
 		ret = TRUE;
 	else
 		ret = FALSE;

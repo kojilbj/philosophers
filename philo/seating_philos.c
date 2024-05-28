@@ -3,27 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   seating_philos.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kojwatan <kojwatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: watanabekoji <watanabekoji@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:03:38 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/22 13:10:54 by kojwatan         ###   ########.fr       */
+/*   Updated: 2024/05/28 09:39:25 by watanabekoj      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-t_philo	*new_philo(int num, t_constraints constaraints,
+t_philo	*new_philo(int num, t_rules rules,
 		size_t time_start, pthread_mutex_t *output_lock)
 {
 	t_philo	*new;
 
 	new = malloc(sizeof(t_philo));
+	if (new == NULL)
+		return (NULL);
 	new->num = num;
 	new->next = NULL;
 	new->dead_fg = FALSE;
 	new->time_start = time_start;
 	new->time_last_eat = time_start;
-	new->constraints = constaraints;
+	new->rules = rules;
 	new->eat_count = 0;
 	new->output_lock = output_lock;
 	pthread_mutex_init(&new->right_fork, NULL);
@@ -39,29 +41,54 @@ void	add_philo(t_philo *new, t_philo *prev)
 	new->left_fork = &(prev->right_fork);
 }
 
-t_philo	*seating_philos(t_constraints constraints)
+void	free_philos(t_philo *philos)
 {
-	int			i;
-	size_t			time_start;
-	t_philo			*top;
-	t_philo			*new;
-	t_philo			*prev;
-	pthread_mutex_t		output_lock;
+	t_philo	*tmp;
 
-	time_start = get_now_time();
-	pthread_mutex_init(&output_lock, NULL);
+	while (philos != NULL)
+	{
+		tmp = philos;
+		philos = philos->next;
+		free(tmp);
+	}
+}
+
+t_philo	*seating_philos_util(t_rules rules, t_philo *top,
+		size_t time_start, pthread_mutex_t *output_lock)
+{
+	t_philo		*new;
+	t_philo		*prev;
+	size_t		i;
+
 	i = 1;
-	top = new_philo(i, constraints, time_start, &output_lock);
 	prev = top;
 	new = top;
-	while (i < constraints.number_of_philos)
+	while (i < rules.number_of_philos)
 	{
-		new = new_philo(i + 1, constraints, time_start, &output_lock);
+		new = new_philo(i + 1, rules, time_start, output_lock);
+		if (new == NULL)
+		{
+			free_philos(top);
+			return (NULL);
+		}
 		add_philo(new, prev);
 		prev = new;
 		i++;
 	}
 	new->next = top;
 	top->left_fork = &new->right_fork;
+	return (top);
+}
+
+t_philo	*seating_philos(t_rules rules)
+{
+	pthread_mutex_t		output_lock;
+	t_philo				*top;
+
+	pthread_mutex_init(&output_lock, NULL);
+	top = new_philo(1, rules, get_now_time(), &output_lock);
+	if (top == NULL)
+		return (NULL);
+	top = seating_philos_util(rules, top, get_now_time(), &output_lock);
 	return (top);
 }
