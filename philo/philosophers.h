@@ -6,19 +6,19 @@
 /*   By: watanabekoji <watanabekoji@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:02:54 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/28 09:38:25 by watanabekoj      ###   ########.fr       */
+/*   Updated: 2024/05/28 14:30:18 by kojwatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <pthread.h>
-#include <sys/time.h>
-#include <libft.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <pthread.h>
+# include <sys/time.h>
+# include <limits.h>
 
 # define TRUE	1
 # define FALSE	0
@@ -39,15 +39,15 @@ typedef struct s_philo
 	size_t			time_last_eat;
 	size_t			eat_count;
 	int				dead_fg;
-	struct s_philo			*next;
-	struct s_rules          rules;
-	pthread_mutex_t			right_fork;
-	pthread_mutex_t			*left_fork;
-	pthread_mutex_t			*output_lock;
-	pthread_mutex_t			dead_fg_lock;
-	pthread_mutex_t			time_last_eat_lock;
-	pthread_mutex_t			eat_count_lock;
-	pthread_t	thread_id;
+	struct s_philo	*next;
+	struct s_rules	rules;
+	pthread_mutex_t	right_fork;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*output_lock;
+	pthread_mutex_t	dead_fg_lock;
+	pthread_mutex_t	time_last_eat_lock;
+	pthread_mutex_t	eat_count_lock;
+	pthread_t		thread_id;
 }	t_philo;
 
 //initialize_functions
@@ -76,12 +76,15 @@ int			validate(char *args[]);
 size_t		get_passed_time(size_t time_start);
 size_t		get_now_time(void);
 
-int	philo_usleep(size_t time_sleep);
+int			philo_usleep(size_t time_sleep);
 
 //check_functions
 size_t		check_dead(t_philo *philo);
 int			is_dead(t_philo *philo);
 int			has_eaten_enough(t_philo *philo);
 void		plus_eat_count(t_philo *philo);
+
+//utils_funcstions
+int			ft_atoi(const char *str);
 
 #endif
