@@ -6,7 +6,7 @@
 /*   By: watanabekoji <watanabekoji@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:02:54 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/28 14:30:18 by kojwatan         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:37:14 by kojwatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_philo
 //initialize_functions
 void		rules_init(t_rules *rules, char *av[]);
 t_philo		*seating_philos(t_rules rules);
+int			mutexes_init(t_philo *philo);
 
 //thread_functions
 void		*observer(void *data);

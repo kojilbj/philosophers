@@ -6,7 +6,7 @@
 /*   By: watanabekoji <watanabekoji@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:46:53 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/28 14:24:39 by kojwatan         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:06:45 by kojwatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,26 @@
 
 void	pthread_join_philos(t_philo *philos)
 {
-	int		i;
-	t_philo	*tmp;
+	int				i;
+	pthread_mutex_t	*output;
+	t_philo			*tmp;
 
 	i = 0;
+	output = philos->output_lock;
 	while (i < philos->rules.number_of_philos)
 	{
 		tmp = philos;
-		pthread_join(philos->thread_id, NULL);
-		pthread_mutex_destroy(&philos->right_fork);
+		pthread_join(tmp->thread_id, NULL);
+		pthread_mutex_destroy(&tmp->right_fork);
+		pthread_mutex_destroy(&tmp->dead_fg_lock);
+		pthread_mutex_destroy(&tmp->time_last_eat_lock);
+		pthread_mutex_destroy(&tmp->eat_count_lock);
 		i++;
 		philos = philos->next;
 		free(tmp);
 	}
+	pthread_mutex_destroy(output);
+	free(output);
 }
 
 int	main(int ac, char *av[])

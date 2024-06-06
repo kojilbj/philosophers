@@ -6,7 +6,7 @@
 /*   By: watanabekoji <watanabekoji@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:03:07 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/28 09:42:19 by watanabekoj      ###   ########.fr       */
+/*   Updated: 2024/06/06 16:37:51 by kojwatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,29 @@ void	rules_init(t_rules *rules, char *av[])
 		rules->times_each_philos_must_eat = ft_atoi(av[4]);
 	else
 		rules->times_each_philos_must_eat = -1;
+}
+
+int	mutexes_init(t_philo *philo)
+{
+	if (pthread_mutex_init(&philo->right_fork, NULL) != 0)
+		return (-1);
+	if (pthread_mutex_init(&philo->dead_fg_lock, NULL) != 0)
+	{
+		pthread_mutex_destroy(&philo->right_fork);
+		return (-1);
+	}
+	if (pthread_mutex_init(&philo->time_last_eat_lock, NULL) != 0)
+	{
+		pthread_mutex_destroy(&philo->right_fork);
+		pthread_mutex_destroy(&philo->dead_fg_lock);
+		return (-1);
+	}
+	if (pthread_mutex_init(&philo->eat_count_lock, NULL) != 0)
+	{
+		pthread_mutex_destroy(&philo->right_fork);
+		pthread_mutex_destroy(&philo->dead_fg_lock);
+		pthread_mutex_destroy(&philo->time_last_eat_lock);
+		return (-1);
+	}
+	return (0);
 }

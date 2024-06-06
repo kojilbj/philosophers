@@ -6,7 +6,7 @@
 /*   By: watanabekoji <watanabekoji@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:03:46 by kojwatan          #+#    #+#             */
-/*   Updated: 2024/05/28 14:24:40 by kojwatan         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:04:02 by kojwatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,22 @@ void	*philo_life_circle(void *data)
 
 int	philos_create(t_philo *philos)
 {
-	int	i;
-	int	ret;
+	int		i;
+	int		ret;
+	t_philo	*top;
 
 	i = 0;
+	top = philos;
+	ret = 0;
 	while (i < philos->rules.number_of_philos)
 	{
 		ret = pthread_create(&(philos->thread_id),
 				NULL, philo_life_circle, (void *)philos);
+		if (ret != 0)
+		{
+			switch_dead_fg(top);
+			break ;
+		}
 		philos = philos->next;
 		i++;
 		usleep(10);
